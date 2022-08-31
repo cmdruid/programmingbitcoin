@@ -1,3 +1,4 @@
+const mod = (n: number, m: number) => (n % m + m) % m
 
 export class FieldElement {
   public num: number
@@ -41,15 +42,13 @@ export class FieldElement {
 
   add(other: FieldElement) {
     this.checkElement(other)
-    const p   = this.prime,
-          num = (((this.num + other.num) % p) + p) % p
+    const num = mod(this.num + other.num, this.prime)
     return new FieldElement(num, this.prime)
   }
 
   sub(other: FieldElement) {
     this.checkElement(other)
-    const p   = this.prime,
-          num = (((this.num - other.num) % p) + p) % p
+    const num = mod(this.num - other.num, this.prime)
     return new FieldElement(num, this.prime)
   }
 }
