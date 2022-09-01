@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "test": "export TS_JEST_DISABLE_VER_CHECKER=true && jest"
+    "test": "export TS_JEST_DISABLE_VER_CHECKER=true && jest",
+    "scratch": "node --no-warnings --loader ts-node/esm --script-mode src/scratch.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.0.0",
