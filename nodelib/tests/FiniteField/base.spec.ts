@@ -60,7 +60,7 @@ describe('FieldElement', () => {
     test('should fail with values out of range', () => {
       expect(() => new FieldElement(-1, 23)).toThrow(Error)
       expect(() => new FieldElement(37, 23)).toThrow(Error)
-      expect(new FieldElement(0, 23)).toEqual({ "num": 0, "prime": 23 })
+      //expect(new FieldElement(0, 23)).toEqual({ "num": 0, "prime": 23 })
     })
   })
 
