@@ -93,6 +93,7 @@ export default {
   moduleNameMapper: {
     '^@src/(.*)$': '<rootDir>/src/$1',
     '^@class/(.*)$': '<rootDir>/src/class/$1',
+    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
