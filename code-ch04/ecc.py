@@ -1,6 +1,7 @@
-from io import BytesIO
-from random import randint
-from unittest import TestCase
+from io        import BytesIO
+from random    import randint
+from unittest  import TestCase
+from ripemd160 import ripemd160
 
 import hashlib
 import hmac
@@ -419,7 +420,7 @@ class S256Point(Point):
 
     # tag::source5[]
     def hash160(self, compressed=True):
-        return hash160(self.sec(compressed))
+        return ripemd160(self.sec(compressed))
 
     def address(self, compressed=True, testnet=False):
         '''Returns the address string'''
