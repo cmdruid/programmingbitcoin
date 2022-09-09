@@ -3,6 +3,7 @@ from unittest import TestCase
 
 import json
 import requests
+import struct
 
 from helper import (
     encode_varint,
@@ -108,15 +109,14 @@ class Tx:
         '''Takes a byte stream and parses the transaction at the start
         return a Tx object
         '''
-        # s.read(n) will return n bytes
-        # version is an integer in 4 bytes, little-endian
-        # num_inputs is a varint, use read_varint(s)
-        # parse num_inputs number of TxIns
-        # num_outputs is a varint, use read_varint(s)
-        # parse num_outputs number of TxOuts
-        # locktime is an integer in 4 bytes, little-endian
-        # return an instance of the class (see __init__ for args)
-        raise NotImplementedError
+        txin, txout = [], []
+        version = int.from_bytes(s.read(4), 'little')
+        for rawtx in range(0, read_varint(s)):
+            txin.append(TxIn.parse(s))
+        for rawtx in range(0, read_varint(s)):
+            txout.append(TxOut.parse(s))
+        locktime = int.from_bytes(s.read(4), 'little')
+        return Tx(version, txin, txout, locktime)
 
     # tag::source6[]
     def serialize(self):
@@ -164,12 +164,17 @@ class TxIn:
         '''Takes a byte stream and parses the tx_input at the start
         return a TxIn object
         '''
+        prev_tx = s.read(32)[::-1]
+        prev_index = int.from_bytes(s.read(4), 'little')
+        script_sig = Script.parse(s)
+        sequence = int.from_bytes(s.read(4), 'little')
+        return TxIn(prev_tx, prev_index, script_sig, sequence)
         # prev_tx is 32 bytes, little endian
         # prev_index is an integer in 4 bytes, little endian
         # use Script.parse to get the ScriptSig
         # sequence is an integer in 4 bytes, little-endian
         # return an instance of the class (see __init__ for args)
-        raise NotImplementedError
+        # raise NotImplementedError
 
     # tag::source5[]
     def serialize(self):
@@ -217,10 +222,14 @@ class TxOut:
         '''Takes a byte stream and parses the tx_output at the start
         return a TxOut object
         '''
+        amount = int.from_bytes(s.read(8), 'little')
+        script_pubkey = Script.parse(s)
+        return TxOut(amount, script_pubkey)
+        
         # amount is an integer in 8 bytes, little endian
         # use Script.parse to get the ScriptPubKey
         # return an instance of the class (see __init__ for args)
-        raise NotImplementedError
+        # raise NotImplementedError
 
     # tag::source4[]
     def serialize(self):  # <1>
